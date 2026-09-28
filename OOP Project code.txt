@@ -1,0 +1,121 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <iomanip>
+
+using namespace std;
+
+void calculation(string name, string rollno, float q1, float q2, float q3, float q4,
+                 float a1, float a2, float m, float f, float p);
+
+float convertStringToInt(string str);
+
+int main(int argc, char** argv)
+{
+    ifstream f;
+
+    f.open("C:\\Users\\iftik\\Downloads\\CP - CP.csv", ios::in);
+
+    if (!f.is_open())
+    {
+        cout << "Failed to open file.\n";
+        return 1;
+    }
+
+    cout << left;
+
+    string line;
+
+    // Skip first two lines of CSV
+    getline(f, line);
+    getline(f, line);
+
+    cout << setw(24) << "Students Name"
+         << setw(10) << "Roll No"
+         << setw(10) << "Quiz 1"
+         << setw(10) << "Quiz 2"
+         << setw(10) << "Quiz 3"
+         << setw(10) << "Quiz 4"
+         << setw(10) << "Ass 1"
+         << setw(10) << "Ass 2"
+         << setw(10) << "Mid"
+         << setw(10) << "Final"
+         << setw(10) << "Project"
+         << setw(12) << "Total"
+         << endl;
+
+    while (getline(f, line))
+    {
+        stringstream lr(line);
+
+        string ar[11];
+
+        // CORRECTED: for instead of br
+        for (int i = 0; i < 11; i++)
+        {
+            getline(lr, ar[i], ',');
+        }
+
+        calculation(
+            ar[0],
+            ar[1],
+            convertStringToInt(ar[2]),
+            convertStringToInt(ar[3]),
+            convertStringToInt(ar[4]),
+            convertStringToInt(ar[5]),
+            convertStringToInt(ar[6]),
+            convertStringToInt(ar[7]),
+            convertStringToInt(ar[8]),
+            convertStringToInt(ar[9]),
+            convertStringToInt(ar[10])
+        );
+
+        cout << endl;
+    }
+
+    f.close();
+
+    return 0;
+}
+
+void calculation(string name, string rollno, float q1, float q2, float q3,
+                 float q4, float a1, float a2, float m, float f, float p)
+{
+    cout << endl;
+
+    // Use float instead of int
+    float total =
+        (((q1 + q2 + q3 + q4) / 40.0) * 10.0)
+        + (((a1 + a2) / 10.0) * 5.0)
+        + ((m / 50.0) * 30.0)
+        + ((f / 100.0) * 45.0)
+        + ((p / 40.0) * 10.0);
+
+    cout << setw(26) << name
+         << setw(10) << rollno
+         << setw(10) << q1
+         << setw(10) << q2
+         << setw(10) << q3
+         << setw(10) << q4
+         << setw(10) << a1
+         << setw(10) << a2
+         << setw(10) << m
+         << setw(10) << f
+         << setw(10) << p
+         << setw(15) << total
+         << endl;
+
+    cout << "__________________________________________________________________________________________________________________________________";
+}
+
+// Convert String To Float
+float convertStringToInt(string str)
+{
+    float num;
+
+    stringstream ss(str);
+    ss >> num;
+
+    return num;
+}
